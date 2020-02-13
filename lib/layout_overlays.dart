@@ -44,7 +44,7 @@ import 'package:flutter/material.dart';
 class AnchoredOverlay extends StatelessWidget {
   final bool showOverlay;
   final Widget Function(BuildContext, Rect anchorBounds, Offset anchor)
-  overlayBuilder;
+      overlayBuilder;
   final Widget child;
 
   AnchoredOverlay({
@@ -65,9 +65,9 @@ class AnchoredOverlay extends StatelessWidget {
             // our parent Container and then we find the center of that box.
             RenderBox box = context.findRenderObject() as RenderBox;
             final topLeft =
-            box.size.topLeft(box.localToGlobal(const Offset(0.0, 0.0)));
+                box.size.topLeft(box.localToGlobal(const Offset(0.0, 0.0)));
             final bottomRight =
-            box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
+                box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
             final Rect anchorBounds = Rect.fromLTRB(
               topLeft.dx,
               topLeft.dy,
@@ -84,19 +84,19 @@ class AnchoredOverlay extends StatelessWidget {
   }
 }
 
-//
-// Displays an overlay Widget as constructed by the given [overlayBuilder].
-//
-// The overlay built by the [overlayBuilder] can be conditionally shown and hidden by settings the [showOverlay]
-// property to true or false.
-//
-// The [overlayBuilder] is invoked every time this Widget is rebuilt.
-//
-// Implementation note: the reason we rebuild the overlay every time our state changes is because there doesn't seem
-// to be any better way to invalidate the overlay itself than to invalidate this Widget.
-// Remember, overlay Widgets exist in [OverlayEntry]s which are inaccessible to outside Widgets.
-// But if a better approach is found then feel free to use it.
-//
+///
+/// Displays an overlay Widget as constructed by the given [overlayBuilder].
+///
+/// The overlay built by the [overlayBuilder] can be conditionally shown and hidden by settings the [showOverlay]
+/// property to true or false.
+///
+/// The [overlayBuilder] is invoked every time this Widget is rebuilt.
+///
+/// Implementation note: the reason we rebuild the overlay every time our state changes is because there doesn't seem
+/// to be any better way to invalidate the overlay itself than to invalidate this Widget.
+/// Remember, overlay Widgets exist in [OverlayEntry]s which are inaccessible to outside Widgets.
+/// But if a better approach is found then feel free to use it.
+///
 class OverlayBuilder extends StatefulWidget {
   final bool showOverlay;
   final Widget Function(BuildContext) overlayBuilder;
@@ -162,6 +162,10 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
   }
 
   void addToOverlay(OverlayEntry overlayEntry) async {
+    if (!mounted) {
+      return;
+    }
+
     Overlay.of(context).insert(overlayEntry);
     final overlay = Overlay.of(context);
     if (overlayEntry == null)
